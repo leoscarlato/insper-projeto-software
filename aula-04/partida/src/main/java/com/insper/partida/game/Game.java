@@ -22,9 +22,9 @@ public class Game {
 
     private Integer scoreAway;
 
-    private Team home;
+    private String home;
 
-    private Team away;
+    private String away;
 
     private Integer attendance;
 

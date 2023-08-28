@@ -52,8 +52,8 @@ public class GameService {
 
         Game game = new Game();
         game.setIdentifier(UUID.randomUUID().toString());
-        game.setHome(teamM);
-        game.setAway(teamV);
+        game.setHome(teamM.getIdentifier());
+        game.setAway(teamV.getIdentifier());
         game.setAttendance(0);
         game.setScoreHome(0);
         game.setScoreAway(0);
