@@ -7,6 +7,9 @@ import com.insper.partida.equipe.dto.TeamReturnDTO;
 import com.insper.partida.game.dto.EditGameDTO;
 import com.insper.partida.game.dto.GameReturnDTO;
 import com.insper.partida.game.dto.SaveGameDTO;
+import com.insper.partida.equipe.exception.TeamNotFoundException;
+import com.insper.partida.equipe.exception.SameTeamException;
+import com.insper.partida.game.exception.GameDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,10 +53,14 @@ public class GameService {
         Team teamV = teamService.getTeam(saveGameDTO.getAway());
 
         if (teamM == null || teamV == null) {
-            return null; // enviar a mensagem de erro correta
+            throw new TeamNotFoundException();
         }
 
         // validar se o time mandante é diferente do visitante
+
+        if (teamM.getIdentifier().equals(teamV.getIdentifier())) {
+            throw new SameTeamException();
+        }
 
         Game game = new Game();
         game.setIdentifier(UUID.randomUUID().toString());
@@ -74,6 +81,9 @@ public class GameService {
         Game gameBD = gameRepository.findByIdentifier(identifier);
 
         // verificasr se o jogo existe
+        if (gameBD == null){
+            throw new GameDoesNotExistException();
+        }
 
         gameBD.setScoreAway(editGameDTO.getScoreAway());
         gameBD.setScoreHome(editGameDTO.getScoreHome());
@@ -86,10 +96,13 @@ public class GameService {
 
     public void deleteGame(String identifier) {
         Game gameBD = gameRepository.findByIdentifier(identifier);
-        if (gameBD != null) {
+
+        if (gameBD == null){
+            throw new GameDoesNotExistException();
+        }
+        else {
             gameRepository.delete(gameBD);
         }
-        //verificar se o jogo existe
     }
 
     public Integer getScoreTeam(String identifier) {
@@ -101,6 +114,11 @@ public class GameService {
     public GameReturnDTO getGame(String identifier) {
 
         // verificar se o gaame existe
+
+        if (gameRepository.findByIdentifier(identifier) == null){
+            throw new GameDoesNotExistException();
+        }
+
         return GameReturnDTO.covert(gameRepository.findByIdentifier(identifier));
     }
 

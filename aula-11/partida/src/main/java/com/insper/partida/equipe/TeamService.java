@@ -5,7 +5,7 @@ import com.insper.partida.equipe.dto.TeamReturnDTO;
 import com.insper.partida.equipe.exception.TeamAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.insper.partida.equipe.exception.TeamNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +39,10 @@ public class  TeamService {
         Team team = teamRepository.findByIdentifier(identifier);
         if (team != null) {
             teamRepository.delete(team);
+        } else {
+            throw new TeamNotFoundException();
         }
-
-        // verificar se o time existe
+        
 
     }
 
