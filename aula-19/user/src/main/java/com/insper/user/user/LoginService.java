@@ -20,4 +20,23 @@ public class LoginService {
         cache.put(token, user);
     }
 
+    /*
+    public void verifyGame(String token) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<User> response =
+                restTemplate.getForEntity("http://localhost:8080/token/" + token, User.class);
+
+
+        User user = response.getBody();
+
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+
+        } else {
+
+        }
+    }
+
+     */
 }

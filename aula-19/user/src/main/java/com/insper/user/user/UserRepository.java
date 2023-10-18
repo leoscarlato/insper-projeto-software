@@ -2,9 +2,11 @@ package com.insper.user.user;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<UserMongo, String> {
 
     boolean existsByEmailAndPassword(String email, String password);
 
-    User findByEmailAndPassword(String email, String encoded);
+    UserMongo findByEmailAndPassword(String email, String encoded);
+
+    UserMongo findByEmail(String username);
 }

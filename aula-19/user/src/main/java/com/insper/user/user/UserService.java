@@ -2,8 +2,8 @@ package com.insper.user.user;
 
 import com.insper.user.user.dto.ReturnUserDTO;
 import com.insper.user.user.dto.SaveUserDTO;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -16,6 +16,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public List<ReturnUserDTO> listUsers() {
         return userRepository
@@ -26,24 +29,23 @@ public class UserService {
     }
 
     public ReturnUserDTO saveUser(SaveUserDTO saveUser) {
-        User user = new User();
-        String encoded = DigestUtils
-                .md5DigestAsHex(saveUser.getPassword().getBytes()).toUpperCase();
-        user.setPassword(encoded);
-        user.setEmail(saveUser.getEmail());
-        user.setRoles(saveUser.getRoles());
+        UserMongo userMongo = new UserMongo();
+        String encoded = passwordEncoder.encode(saveUser.getPassword());
+        userMongo.setPassword(encoded);
+        userMongo.setEmail(saveUser.getEmail());
+        userMongo.setRoles(saveUser.getRoles());
 
-        return ReturnUserDTO.convert(userRepository.save(user));
+        return ReturnUserDTO.convert(userRepository.save(userMongo));
     }
 
     public ReturnUserDTO validateUser(String email, String password) {
         String encoded = DigestUtils
                 .md5DigestAsHex(password.getBytes()).toUpperCase();
-        User user = userRepository.findByEmailAndPassword(email, encoded);
-        if (user == null) {
+        UserMongo userMongo = userRepository.findByEmailAndPassword(email, encoded);
+        if (userMongo == null) {
             throw new RuntimeException("User not found");
         }
-        return ReturnUserDTO.convert(user);
+        return ReturnUserDTO.convert(userMongo);
     }
 
 }
