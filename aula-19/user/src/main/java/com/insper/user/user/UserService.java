@@ -34,6 +34,7 @@ public class UserService {
         userMongo.setPassword(encoded);
         userMongo.setEmail(saveUser.getEmail());
         userMongo.setRoles(saveUser.getRoles());
+        userMongo.setActiveState(true);
 
         return ReturnUserDTO.convert(userRepository.save(userMongo));
     }
@@ -45,6 +46,17 @@ public class UserService {
         if (userMongo == null) {
             throw new RuntimeException("User not found");
         }
+        return ReturnUserDTO.convert(userMongo);
+    }
+
+    public ReturnUserDTO disableUser(String email){
+        UserMongo userMongo = userRepository.findByEmail(email);
+
+        if (userMongo.getActiveState() == true){
+            userMongo.setActiveState(false);
+            userRepository.save(userMongo);
+        }
+
         return ReturnUserDTO.convert(userMongo);
     }
 

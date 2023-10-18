@@ -35,5 +35,10 @@ public class UserController {
     // @GetMapping (/userId) -> Todos
     // @PutMapping (/userId) -> muda o password -> User só pode mudar o próprio passowrd
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @DeleteMapping("/{email}")
+    public ReturnUserDTO disableUser(@PathVariable String email){
+        return userService.disableUser(email);
+    }
 
 }

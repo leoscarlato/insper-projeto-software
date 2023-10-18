@@ -12,12 +12,14 @@ public class ReturnUserDTO {
     private String email;
     private String password;
     private List<String> roles;
+    private Boolean activeState;
 
     public static ReturnUserDTO convert(UserMongo userMongo) {
         ReturnUserDTO userDTO = new ReturnUserDTO();
         userDTO.setEmail(userMongo.getEmail());
         userDTO.setRoles(userMongo.getRoles());
         userDTO.setPassword(userMongo.getPassword());
+        userDTO.setActiveState(userMongo.getActiveState());
         return userDTO;
     }
 
