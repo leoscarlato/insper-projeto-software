@@ -1,4 +1,4 @@
-package main.java.com.insper.partida.common.game.dto;
+package com.insper.partida.common.game.dto;
 
 import lombok.*;
 import java.util.List;
