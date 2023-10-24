@@ -13,30 +13,17 @@ public class LoginService {
     private HashMap<String, ReturnUserDTO> cache = new HashMap<>();
 
     public ReturnUserDTO get(String token) {
-        return cache.get(token);
+
+        ReturnUserDTO user = cache.get(token);
+        if (user == null){
+            throw new RuntimeException("User not found");
+        } else {
+            return user;
+        }
     }
 
     public void put(String token, ReturnUserDTO user) {
         cache.put(token, user);
     }
 
-    /*
-    public void verifyGame(String token) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<User> response =
-                restTemplate.getForEntity("http://localhost:8080/token/" + token, User.class);
-
-
-        User user = response.getBody();
-
-
-        if (response.getStatusCode().is2xxSuccessful()) {
-
-        } else {
-
-        }
-    }
-
-     */
 }

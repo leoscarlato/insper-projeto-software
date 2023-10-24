@@ -4,16 +4,13 @@ import com.insper.user.user.dto.LoginDTO;
 import com.insper.user.user.dto.ReturnUserDTO;
 import com.insper.user.user.dto.TokenDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
 @RestController
 @RequestMapping("/login")
-public class LoginController {
+public class    LoginController {
 
     @Autowired
     private UserService userService;
@@ -28,13 +25,12 @@ public class LoginController {
 
         loginService.put(token, user);
 
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setEmail(user.getEmail());
-        tokenDTO.setToken(token);
-        tokenDTO.setRoles(user.getRoles());
-        return tokenDTO;
+        return new TokenDTO(user.getEmail(), token, user.getRoles());
     }
 
-    // GetMapping("/token/{token}")
+    @GetMapping("/token/{token}")
+    public ReturnUserDTO getByToken(@RequestParam String token){
+        return loginService.get(token);
+    }
 
 }
