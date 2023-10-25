@@ -35,7 +35,7 @@ public class LoginFilter implements Filter {
         String uri = req.getRequestURI();
         String method = req.getMethod();
 
-        if (method.equals("GET") && openRoutes.contains(uri)) {
+        if (method.equals("GET") && openRoutes.contains(uri) || uri.contains("/token")) {
             chain.doFilter(request, response);
         } else if (method.equals("POST") && uri.equals("/login")) {
             chain.doFilter(request, response);

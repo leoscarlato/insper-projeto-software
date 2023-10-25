@@ -29,7 +29,7 @@ public class    LoginController {
     }
 
     @GetMapping("/token/{token}")
-    public ReturnUserDTO getByToken(@RequestParam String token){
+    public ReturnUserDTO getByToken(@PathVariable String token){
         return loginService.get(token);
     }
 
